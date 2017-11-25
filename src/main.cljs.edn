@@ -1,0 +1,3 @@
+{:require [webgl-cljs.core]
+ :init-fns [webgl-cljs.core/-main]
+ :compiler-options {}}

@@ -1,6 +1,6 @@
 (def project 'webgl-cljs)
 
-(set-env! :source-paths #{"src" "resources"}
+(set-env! :resource-paths #{"src" "resources"}
           :dependencies '[[org.clojure/clojure         "1.8.0"]
                           [org.clojure/clojurescript   "1.9.946"]
                           [pandeiro/boot-http          "0.8.3"]
@@ -12,15 +12,16 @@
                           [weasel                      "0.7.0"  :scope "test"]
                           [org.clojure/tools.nrepl     "0.2.13" :scope "test"]])
 
-(require '[pandeiro.boot-http          :refer [serve]]
-         '[adzerk.boot-cljs            :refer [cljs]]
-         '[adzerk.boot-cljs-repl       :refer [cljs-repl]]
-         '[adzerk.boot-reload          :refer [reload]])
+(require '[pandeiro.boot-http    :refer [serve]]
+         '[adzerk.boot-cljs      :refer [cljs]]
+         '[adzerk.boot-cljs-repl :refer [cljs-repl]]
+         '[adzerk.boot-reload    :refer [reload]])
 
 (deftask dev []
   (comp
     (serve :dir "target")
     (watch)
-    (reload)
+    (reload :on-jsload 'webgl-cljs.core/-main)
     (cljs-repl)
-    (cljs :source-map true :optimizations :none)))
+    (cljs :source-map true :optimizations :none)
+    (target)))
